@@ -1,0 +1,29 @@
+name: Hadolint Dockerfile Linter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint Dockerfiles
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Hadolint
+        run: |
+          wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+          chmod +x /usr/local/bin/hadolint
+
+      - name: Run Hadolint
+        run: |
+          find . -name 'Dockerfile*' -exec hadolint {} +
+
+      - name: Annotate Results
+        if: ${{ failure() }}
+        run: echo "Linting issues found. Check the logs for details."
