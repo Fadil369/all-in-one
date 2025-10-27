@@ -68,7 +68,7 @@ jobs:
       - name: Run Playwright tests for backup restore
         run: cd php/tests && DEBUG=pw:api npx playwright test tests/restore-instance.spec.js
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
